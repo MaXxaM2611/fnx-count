@@ -20,10 +20,10 @@ AddEventHandler("esx:setJob",function (src,newjob,lastJob)
             if JobsCount[newjob.name] then
                 table.insert(JobsCount[newjob.name],src)
             end
-            if JobsCount[lastJob] then
-                for a, b in pairs(JobsCount[lastJob]) do
+            if JobsCount[lastJob.name] then
+                for a, b in pairs(JobsCount[lastJob.name]) do
                     if b == src then
-                        table.remove(JobsCount[lastJob],tonumber(a))
+                        table.remove(JobsCount[lastJob.name],tonumber(a))
                         break
                     end
                 end
@@ -31,7 +31,6 @@ AddEventHandler("esx:setJob",function (src,newjob,lastJob)
         end
     end
 end)
-
 
 AddEventHandler("esx:playerLoaded",function (src,xplayer,isnew)
     if PlayersCache[src] == nil then
@@ -104,56 +103,9 @@ end
 --ESEMPIO DI QUESTO SISTEMA 
 
 
-local JobOnline = exports["fnx-count"]:getCountJob("job")
+local JobOnline = exports["fnx-count"]:getCountJob("job")  -- numero player con un determinato lavoro online
 
+local TableJobOnline = exports["fnx-count"]:getTablePlayersJob("job")  -- tabella dei player con un determinato lavoro online
 
 ]]
-
-
-
-
---- Per Poter Usare questo sistema bisogna modificare il classico setjob aggiungendo un trigger
---[[
-
-
-    self.setJob = function(job, grade)
-		grade = tostring(grade)
-		local lastJob = self.job.name                                                             --------> [EDIT]
-
-		if ESX.DoesJobExist(job, grade) then
-			local jobObject, gradeObject = ESX.Jobs[job], ESX.Jobs[job].grades[grade]
-
-			self.job.id    = jobObject.id
-			self.job.name  = jobObject.name
-			self.job.label = jobObject.label
-
-			self.job.grade        = tonumber(grade)
-			self.job.grade_name   = gradeObject.name
-			self.job.grade_label  = gradeObject.label
-			self.job.grade_salary = gradeObject.salary
-
-			if gradeObject.skin_male then
-				self.job.skin_male = json.decode(gradeObject.skin_male)
-			else
-				self.job.skin_male = {}
-			end
-
-			if gradeObject.skin_female then
-				self.job.skin_female = json.decode(gradeObject.skin_female)
-			else
-				self.job.skin_female = {}
-			end
-
-			TriggerEvent('esx:setJob', self.source, self.job, lastJob)                              --------> [EDIT]
-			self.triggerEvent('esx:setJob', self.job)
-		else
-			print(('[es_extended] [^3WARNING^7] Ignoring invalid .setJob() usage for "%s"'):format(self.identifier))
-		end
-	end
-]]
-
----Il trigger è stato gia protetto cosi che nessun client possa triggerarlo per falsare i valori
-
-
-
 
